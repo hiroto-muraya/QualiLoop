@@ -1,4 +1,6 @@
-﻿List<Qualification> qualifications = new List<Qualification>();
+﻿using System.Linq;
+
+List<Qualification> qualifications = new List<Qualification>();
 
 qualifications.Add(new Qualification
 {
@@ -51,7 +53,7 @@ while (isRunning)
             break;
 
         case "3":
-            Console.WriteLine("資格検索はまだ実装されていません。");
+            SearchQualifications(qualifications);
             break;
 
         case "4":
@@ -85,6 +87,7 @@ static void ShowQualifications(List<Qualification> qualifications)
     }
 }
 
+//　2.資格登録
 static void AddQualification(List<Qualification> qualifications)
 {
     Console.Write("資格名：");
@@ -108,4 +111,31 @@ static void AddQualification(List<Qualification> qualifications)
     });
 
     Console.WriteLine("登録完了！");
+}
+
+// 3.資格検索
+static void SearchQualifications(List<Qualification> qualifications)
+{
+    Console.Write("検索する資格名：");
+    string keyword = (Console.ReadLine()!);
+
+    var results = qualifications.Where(q => q.Name.Contains(keyword)).ToList();
+
+    if (results.Count == 0)
+    {
+        Console.WriteLine("該当する資格がありません。");
+        return;
+    }
+
+    Console.WriteLine();
+    Console.WriteLine("===== 検索結果 =====");
+
+    foreach (Qualification qualification in results)
+    {
+        Console.WriteLine("資格名：" + qualification.Name);
+        Console.WriteLine("分野：" + qualification.Category);
+        Console.WriteLine("勉強時間：" + qualification.StudyHours + "時間");
+        Console.WriteLine("正答率：" + qualification.Accuracy + "%");
+        Console.WriteLine("--------------------");
+    }
 }
