@@ -47,7 +47,7 @@ while (isRunning)
             break;
 
         case "2":
-            Console.WriteLine("資格登録はまだ実装されていません。");
+            AddQualification(qualifications);
             break;
 
         case "3":
@@ -69,7 +69,7 @@ while (isRunning)
     }
 }
 
-
+// 1.資格一覧
 static void ShowQualifications(List<Qualification> qualifications)
 {
     Console.WriteLine();
@@ -83,4 +83,29 @@ static void ShowQualifications(List<Qualification> qualifications)
         Console.WriteLine("正答率：" + qualification.Accuracy + "%");
         Console.WriteLine("--------------------");
     }
+}
+
+static void AddQualification(List<Qualification> qualifications)
+{
+    Console.Write("資格名：");
+    string name = Console.ReadLine()!;
+
+    Console.Write("分野：");
+    string category = Console.ReadLine()!;
+
+    Console.Write("勉強時間：");
+    int studyHours = int.Parse(Console.ReadLine()!);
+
+    Console.Write("正答率：");
+    double accuracy = double.Parse(Console.ReadLine()!);
+
+    qualifications.Add(new Qualification
+    {
+        Name = name,
+        Category = category,
+        StudyHours = studyHours,
+        Accuracy = accuracy
+    });
+
+    Console.WriteLine("登録完了！");
 }
