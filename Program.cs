@@ -1,31 +1,6 @@
 ﻿using System.Linq;
 
-List<Qualification> qualifications = new List<Qualification>();
-
-qualifications.Add(new Qualification
-{
-    Name = "AWS CLF",
-    Category = "AWS",
-    StudyHours = 20,
-    Accuracy = 72.4
-});
-
-qualifications.Add(new Qualification
-{
-    Name = "JP1認定エンジニア",
-    Category = "JP1",
-    StudyHours = 30,
-    Accuracy = 70.0
-});
-
-qualifications.Add(new Qualification
-{
-    Name = "Java Silver 11",
-    Category = "Java",
-    StudyHours = 50,
-    Accuracy = 83.0
-});
-
+List<Qualification> qualifications = LoadQualificationsFromCsv();
 
 bool isRunning = true;
 
@@ -222,4 +197,50 @@ static void ExportToCsv(List<Qualification> qualifications)
 
     Console.WriteLine("CSV出力が完了しました。");
     Console.WriteLine("出力先：" + filePath);
+}
+
+// csvファイル読み込み(システム起動時の処理)
+static List<Qualification> LoadQualificationsFromCsv()
+{
+    string outputDirectory = "../createCSV";
+
+    List<Qualification> qualifications = new List<Qualification>();
+
+    if (!Directory.Exists(outputDirectory))
+    {
+        return qualifications;
+    }
+
+    string[] csvFiles = Directory.GetFiles(
+        outputDirectory,
+        "qualifications_*.csv"
+    );
+
+    if (csvFiles.Length == 0)
+    {
+        return qualifications;
+    }
+
+    string latestFile = csvFiles
+        .OrderByDescending(file => File.GetLastWriteTime(file))
+        .First();
+
+    string[] lines = File.ReadAllLines(latestFile);
+
+    foreach (string line in lines.Skip(1))
+    {
+        string[] values = line.Split(',');
+
+        Qualification qualification = new Qualification
+        {
+            Name = values[0],
+            Category = values[1],
+            StudyHours = int.Parse(values[2]),
+            Accuracy = double.Parse(values[3])
+        };
+
+        qualifications.Add(qualification);
+    }
+
+    return qualifications;
 }
