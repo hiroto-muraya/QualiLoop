@@ -81,20 +81,42 @@ static void AddQualification(List<Qualification> qualifications)
     Console.Write("分野：");
     string category = Console.ReadLine()!;
 
-    Console.Write("勉強時間：");
-    int studyHours = int.Parse(Console.ReadLine()!);
-
-    Console.Write("正答率：");
-    double accuracy = double.Parse(Console.ReadLine()!);
-
-    qualifications.Add(new Qualification
+    while (true)
     {
-        Name = name,
-        Category = category,
-        StudyHours = studyHours,
-        Accuracy = accuracy
-    });
+        Console.Write("勉強時間：");
+        string inputStudyHours = Console.ReadLine()!;
+        if (int.TryParse(inputStudyHours, out int studyHours))
+        {
+            Console.WriteLine(studyHours + "h");
+            break;
+        }
+        else
+        {
+            Console.WriteLine("数字を入力してください。");
+        }
+    }
 
+    while (true)
+    {
+        Console.Write("正答率：");
+        string inputAccuracy = Console.ReadLine()!;
+        if (double.TryParse(inputAccuracy, out double accuracy))
+        {
+            if (accuracy >= 0 && accuracy <= 100)
+            {
+                Console.WriteLine(accuracy + "%");
+                break;
+            }
+            else
+            {
+                Console.WriteLine("正答率は0～100の範囲で入力してください。");
+            }
+        }
+        else
+        {
+            Console.WriteLine("数字を入力してください。");
+        }
+    }
     Console.WriteLine("登録完了！");
 }
 
