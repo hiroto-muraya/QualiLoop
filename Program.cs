@@ -57,7 +57,7 @@ while (isRunning)
             break;
 
         case "4":
-            Console.WriteLine("資格削除はまだ実装されていません。");
+            DeleteQualification(qualifications);
             break;
 
         case "5":
@@ -138,4 +138,22 @@ static void SearchQualifications(List<Qualification> qualifications)
         Console.WriteLine("正答率：" + qualification.Accuracy + "%");
         Console.WriteLine("--------------------");
     }
+}
+
+static void DeleteQualification(List<Qualification> qualifications)
+{
+    Console.Write("削除する資格名：");
+    string keyword = Console.ReadLine()!;
+
+    var qualification = qualifications.FirstOrDefault(q => q.Name == keyword);
+
+    if (qualification == null)
+    {
+        Console.WriteLine("該当する資格がありません。");
+        return;
+    }
+
+    qualifications.Remove(qualification);
+
+    Console.WriteLine(qualification.Name + " を削除しました。");
 }
