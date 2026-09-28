@@ -38,7 +38,8 @@ while (isRunning)
     Console.WriteLine("3. 資格検索");
     Console.WriteLine("4. 資格削除");
     Console.WriteLine("5. 資格更新");
-    Console.WriteLine("6. 終了");
+    Console.WriteLine("6. CSV出力");
+    Console.WriteLine("7. 終了");
     Console.Write("番号を入力してください：");
 
     string input = Console.ReadLine()!;
@@ -66,6 +67,10 @@ while (isRunning)
             break;
 
         case "6":
+            ExportToCsv(qualifications);
+            break;
+
+        case "7":
             Console.WriteLine("アプリを終了します。");
             isRunning = false;
             break;
@@ -191,4 +196,30 @@ static void UpdateQualification(List<Qualification> qualifications)
     qualification.Accuracy = double.Parse(Console.ReadLine()!);
 
     Console.WriteLine("更新完了！");
+}
+
+// 6.CSV出力
+static void ExportToCsv(List<Qualification> qualifications)
+{
+    string outputDirectory = "../createCSV";
+    string fileName = $"qualifications_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
+    string filePath = Path.Combine(outputDirectory, fileName);
+
+    List<string> lines = new List<string>();
+
+    lines.Add("Name,Category,StudyHours,Accuracy");
+
+    foreach (Qualification qualification in qualifications)
+    {
+        string line = qualification.Name + ","
+                    + qualification.Category + ","
+                    + qualification.StudyHours + ","
+                    + qualification.Accuracy;
+        lines.Add(line);
+    }
+
+    File.WriteAllLines(filePath, lines);
+
+    Console.WriteLine("CSV出力が完了しました。");
+    Console.WriteLine("出力先：" + filePath);
 }
