@@ -37,7 +37,8 @@ while (isRunning)
     Console.WriteLine("2. 資格登録");
     Console.WriteLine("3. 資格検索");
     Console.WriteLine("4. 資格削除");
-    Console.WriteLine("5. 終了");
+    Console.WriteLine("5. 資格更新");
+    Console.WriteLine("6. 終了");
     Console.Write("番号を入力してください：");
 
     string input = Console.ReadLine()!;
@@ -61,6 +62,10 @@ while (isRunning)
             break;
 
         case "5":
+            UpdateQualification(qualifications);
+            break;
+
+        case "6":
             Console.WriteLine("アプリを終了します。");
             isRunning = false;
             break;
@@ -140,6 +145,7 @@ static void SearchQualifications(List<Qualification> qualifications)
     }
 }
 
+// 4.資格削除
 static void DeleteQualification(List<Qualification> qualifications)
 {
     Console.Write("削除する資格名：");
@@ -156,4 +162,33 @@ static void DeleteQualification(List<Qualification> qualifications)
     qualifications.Remove(qualification);
 
     Console.WriteLine(qualification.Name + " を削除しました。");
+}
+
+// 5.資格更新
+static void UpdateQualification(List<Qualification> qualifications)
+{
+    Console.Write("更新する資格名：");
+    string keyword = Console.ReadLine()!;
+
+    var qualification = qualifications.FirstOrDefault(q => q.Name == keyword);
+
+    if (qualification == null)
+    {
+        Console.WriteLine("該当する資格がありません。");
+        return;
+    }
+
+    Console.Write("新しい資格名：");
+    qualification.Name = Console.ReadLine()!;
+
+    Console.Write("新しい分野：");
+    qualification.Category = Console.ReadLine()!;
+
+    Console.Write("新しい勉強時間：");
+    qualification.StudyHours = int.Parse(Console.ReadLine()!);
+
+    Console.Write("新しい正答率：");
+    qualification.Accuracy = double.Parse(Console.ReadLine()!);
+
+    Console.WriteLine("更新完了！");
 }
